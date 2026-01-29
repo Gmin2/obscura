@@ -1,0 +1,6 @@
+{
+  "program": "obscura_token.aleo",
+  "version": "0.1.0",
+  "description": "Token module for Obscura Dark Pool",
+  "license": "MIT"
+}

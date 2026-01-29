@@ -1,0 +1,6 @@
+{
+  "program": "obscura_settlement.aleo",
+  "version": "0.1.0",
+  "description": "Settlement module for Obscura Dark Pool",
+  "license": "MIT"
+}

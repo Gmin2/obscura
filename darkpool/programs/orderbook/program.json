@@ -1,0 +1,6 @@
+{
+  "program": "obscura_orderbook.aleo",
+  "version": "0.1.0",
+  "description": "Order book module for Obscura Dark Pool",
+  "license": "MIT"
+}
