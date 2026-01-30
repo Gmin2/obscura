@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <link rel="icon" href="data:," />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+      /* Custom utility for the dot pattern */
+      .bg-dot-pattern {
+        background-image: radial-gradient(#1A1A1A 1px, transparent 1px);
+        background-size: 6px 6px;
+      }
+      .bg-dot-pattern-light {
+        background-image: radial-gradient(rgba(255,255,255,0.2) 1px, transparent 1px);
+        background-size: 6px 6px;
+      }
+      
+      /* Smooth scrolling */
+      html {
+        scroll-behavior: smooth;
+      }
+
+      /* Corner Clipping Utilities */
+      .clip-chamfer-lg {
+        clip-path: polygon(
+          20px 0, 100% 0, 
+          100% calc(100% - 20px), calc(100% - 20px) 100%, 
+          0 100%, 0 20px
+        );
+      }
+      
+      .clip-chamfer-md {
+        clip-path: polygon(
+          12px 0, 100% 0, 
+          100% calc(100% - 12px), calc(100% - 12px) 100%, 
+          0 100%, 0 12px
+        );
+      }
+      
+      /* New 4-corner chamfer */
+      .clip-chamfer-4 {
+        clip-path: polygon(
+          12px 0, calc(100% - 12px) 0, 
+          100% 12px, 100% calc(100% - 12px), 
+          calc(100% - 12px) 100%, 12px 100%, 
+          0 calc(100% - 12px), 0 12px
+        );
+      }
+
+      .clip-chamfer-sm {
+        clip-path: polygon(
+          8px 0, 100% 0, 
+          100% calc(100% - 8px), calc(100% - 8px) 100%, 
+          0 100%, 0 8px
+        );
+      }
+
+      /* Specific clip for the top card part (Top corners large, bottom corners small) */
+      .clip-card-top {
+        clip-path: polygon(
+          20px 0, calc(100% - 20px) 0, 
+          100% 20px, 100% calc(100% - 8px), 
+          calc(100% - 8px) 100%, 8px 100%, 
+          0 calc(100% - 8px), 0 20px
+        );
+      }
+
+      /* Specific clip for the bottom card part (Top corners small, bottom corners large) */
+      .clip-card-bottom {
+        clip-path: polygon(
+          8px 0, calc(100% - 8px) 0, 
+          100% 8px, 100% calc(100% - 20px), 
+          calc(100% - 20px) 100%, 20px 100%, 
+          0 calc(100% - 20px), 0 8px
+        );
+      }
+    </style>
+  </head>
+  <body class="bg-charcoal text-paper antialiased overflow-x-hidden selection:bg-accent selection:text-white">
+    <div id="root">
+      <div class="spinner">
+        <div class="dot1"></div>
+        <div class="dot2"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
