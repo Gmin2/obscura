@@ -33,14 +33,14 @@ export const Hero = () => {
                </Link>
 
                {/* Secondary Button - Fixed Chamfer Outline */}
-               <a href="https://github.com/Gmin2/obscura" target="_blank" rel="noopener noreferrer" className="group relative w-auto inline-flex items-center justify-center font-mono text-sm uppercase tracking-wider font-bold text-ink transition-transform active:scale-95">
+               <Link to="/docs" className="group relative w-auto inline-flex items-center justify-center font-mono text-sm uppercase tracking-wider font-bold text-ink transition-transform active:scale-95">
                  {/* Outer container provides the border color (Ink) */}
                  <div className="absolute inset-0 bg-ink clip-chamfer-sm"></div>
                  {/* Inner container provides the background color (Paper) and creates the 'border' thickness */}
                  <div className="absolute inset-[2px] bg-paper clip-chamfer-sm group-hover:bg-ink transition-colors duration-300"></div>
                  {/* Text Content */}
                  <span className="relative z-10 px-8 py-4 group-hover:text-paper transition-colors duration-300">View Docs</span>
-               </a>
+               </Link>
              </div>
           </div>
 
