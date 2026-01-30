@@ -25,7 +25,7 @@ const Tooltip: React.FC<TooltipProps> = ({ children, text, position = 'right' })
       {children}
       {show && (
         <div
-          className={`absolute ${positionClasses[position]} z-50 px-2 py-1 bg-charcoal border border-paper/20 rounded text-[10px] font-mono text-paper whitespace-nowrap shadow-lg`}
+          className={`absolute ${positionClasses[position]} z-[100] px-2 py-1 bg-charcoal border border-paper/20 rounded text-[10px] font-mono text-paper whitespace-nowrap shadow-lg`}
         >
           {text}
           {/* Arrow */}

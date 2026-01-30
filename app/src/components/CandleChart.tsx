@@ -1,5 +1,5 @@
-import React, { useMemo, useState } from 'react';
-import { ResponsiveContainer, ComposedChart, XAxis, YAxis, Tooltip, Bar, ReferenceLine, CartesianGrid, Area, Line, ReferenceArea } from 'recharts';
+import React, { useMemo } from 'react';
+import { ResponsiveContainer, ComposedChart, XAxis, YAxis, Tooltip, Bar, ReferenceLine, CartesianGrid, Area, Line } from 'recharts';
 import type { CandleData } from '../types';
 
 export type ChartType = 'candle' | 'bar' | 'line' | 'area';
@@ -74,6 +74,7 @@ const CustomTooltip = ({ active, payload, onHover }: any) => {
     const data = payload[0].payload;
     const change = data.close - data.open;
     const changePercent = ((change / data.open) * 100);
+    const isUp = change >= 0;
 
     // Report to parent
     if (onHover) {
@@ -88,11 +89,53 @@ const CustomTooltip = ({ active, payload, onHover }: any) => {
         changePercent
       });
     }
+
+    const greenColor = '#4ADE80';
+    const redColor = '#F87171';
+    const paperColor = '#E6E2D6';
+    const mutedColor = 'rgba(230, 226, 214, 0.5)';
+
+    // Show tooltip on chart
+    return (
+      <div
+        style={{
+          backgroundColor: 'rgba(31, 31, 31, 0.95)',
+          border: '1px solid rgba(230, 226, 214, 0.2)',
+          borderRadius: '8px',
+          padding: '8px 12px',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.4)',
+          backdropFilter: 'blur(8px)',
+          fontFamily: 'JetBrains Mono, monospace',
+          minWidth: '100px',
+        }}
+      >
+        <div style={{ fontSize: '10px', color: mutedColor, marginBottom: '6px' }}>{data.time}</div>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px 12px', fontSize: '11px' }}>
+          <span style={{ color: mutedColor }}>O</span>
+          <span style={{ color: paperColor, textAlign: 'right' }}>{data.open.toFixed(2)}</span>
+          <span style={{ color: mutedColor }}>H</span>
+          <span style={{ color: greenColor, textAlign: 'right' }}>{data.high.toFixed(2)}</span>
+          <span style={{ color: mutedColor }}>L</span>
+          <span style={{ color: redColor, textAlign: 'right' }}>{data.low.toFixed(2)}</span>
+          <span style={{ color: mutedColor }}>C</span>
+          <span style={{ color: isUp ? greenColor : redColor, textAlign: 'right' }}>{data.close.toFixed(2)}</span>
+        </div>
+        <div style={{
+          marginTop: '6px',
+          paddingTop: '6px',
+          borderTop: '1px solid rgba(230, 226, 214, 0.1)',
+          fontSize: '10px',
+          textAlign: 'center',
+          color: isUp ? greenColor : redColor,
+        }}>
+          {isUp ? '+' : ''}{changePercent.toFixed(2)}%
+        </div>
+      </div>
+    );
   } else if (onHover) {
     onHover(null);
   }
 
-  // Return null to hide default tooltip - we show data in header instead
   return null;
 };
 
@@ -148,6 +191,8 @@ const CandleChart: React.FC<CandleChartProps> = ({ data, isDark, type = 'candle'
           <Tooltip
             content={<CustomTooltip onHover={onHover} />}
             cursor={{ stroke: '#F25C33', strokeWidth: 1, strokeDasharray: '4 4' }}
+            wrapperStyle={{ zIndex: 100, outline: 'none' }}
+            allowEscapeViewBox={{ x: true, y: true }}
           />
           <ReferenceLine y={2983.18} stroke="#F25C33" strokeDasharray="3 3" strokeOpacity={0.5} />
 

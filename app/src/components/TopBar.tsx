@@ -20,7 +20,7 @@ export const TopBar = () => {
                 {/* Center Nav */}
                 <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
                     <Link to="/terminal" className="text-ink/60 hover:text-ink transition-colors">Trade</Link>
-                    <a href="https://github.com/Gmin2/obscura" target="_blank" rel="noopener noreferrer" className="text-ink/60 hover:text-ink transition-colors">Docs</a>
+                    <Link to="/docs" className="text-ink/60 hover:text-ink transition-colors">Docs</Link>
                 </nav>
 
                 {/* Right: Network Status + Launch Button */}

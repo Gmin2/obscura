@@ -4,16 +4,10 @@ import ChartOverlay, { type DrawingTool } from '../components/ChartOverlay';
 import OrderBook from '../components/OrderBook';
 import OrderEntry from '../components/OrderEntry';
 import Tooltip from '../components/Tooltip';
+import AppTopBar from '../components/AppTopBar';
 import { MOCK_CANDLES, getCandlesForTimeframe } from '../constants';
 import {
-  Bell,
-  Search,
-  LayoutGrid,
-  Folder,
-  FileText,
-  User,
   Plus,
-  ChevronDown,
   BarChart2,
   Activity,
   Layers,
@@ -29,14 +23,12 @@ import {
   Trash2,
   GanttChartSquare,
   Smile,
-  Home,
   Unlock,
   ZoomIn,
   ZoomOut,
   Maximize2,
-  Hand
+  Hand,
 } from 'lucide-react';
-import { Link } from 'react-router-dom';
 
 interface Drawing {
   id: string;
@@ -204,50 +196,7 @@ function Terminal() {
       />
 
       {/* Navigation Header */}
-      <header className="flex items-center justify-between shrink-0 relative z-10 py-1">
-        <div className="flex items-center gap-6">
-          {/* Logo */}
-          <div className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-accent rounded flex items-center justify-center text-ink">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-              </svg>
-            </div>
-            <span className="font-mono font-bold text-xs tracking-widest text-paper uppercase">DarkPool</span>
-          </div>
-
-          {/* Nav Bar */}
-          <div className="bg-ink border border-paper/10 rounded-lg p-0.5 flex items-center gap-0.5">
-             <Link to="/" className="p-1.5 hover:bg-paper/10 text-paper/50 rounded transition-colors"><Home size={14} /></Link>
-             <button className="p-1.5 bg-accent text-ink rounded"><LayoutGrid size={14} /></button>
-             <button className="p-1.5 hover:bg-paper/10 text-paper/50 rounded transition-colors"><Folder size={14} /></button>
-             <button className="p-1.5 hover:bg-paper/10 text-paper/50 rounded transition-colors"><FileText size={14} /></button>
-             <button className="p-1.5 hover:bg-paper/10 text-paper/50 rounded transition-colors"><User size={14} /></button>
-          </div>
-        </div>
-
-        {/* Right Actions */}
-        <div className="flex items-center gap-2">
-          <div className="relative hidden md:block">
-            <Search className="absolute left-2 top-1/2 -translate-y-1/2 text-paper/40" size={12} />
-            <input
-              type="text"
-              placeholder="Search"
-              className="bg-ink border border-paper/10 pl-7 pr-3 py-1 rounded text-xs outline-none text-paper placeholder-paper/40 focus:border-accent/50 w-32 font-mono"
-            />
-          </div>
-          <button className="w-6 h-6 bg-ink border border-paper/10 rounded flex items-center justify-center text-paper/50 hover:text-paper hover:border-paper/20 transition-colors">
-            <Bell size={12} />
-          </button>
-          <div className="flex items-center gap-2 pl-2 border-l border-paper/10">
-             <div className="w-6 h-6 rounded-full bg-accent overflow-hidden">
-                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User" />
-             </div>
-             <span className="font-mono text-[10px] text-paper/60 hidden md:block">TRADER_01</span>
-             <ChevronDown size={10} className="text-paper/40" />
-          </div>
-        </div>
-      </header>
+      <AppTopBar />
 
       {/* Main Dashboard Grid */}
       <main className="flex-1 grid grid-cols-12 gap-2 min-h-0 relative z-10">
@@ -307,9 +256,11 @@ function Terminal() {
                           <ZoomOut size={14} />
                         </button>
                       </Tooltip>
-                      <span className="text-[10px] font-mono text-paper/60 min-w-[40px] text-center">
-                        {Math.round(zoomLevel * 100)}%
-                      </span>
+                      <Tooltip text="Ctrl + Scroll to zoom" position="bottom">
+                        <span className="text-[10px] font-mono text-paper/60 min-w-[40px] text-center cursor-help">
+                          {Math.round(zoomLevel * 100)}%
+                        </span>
+                      </Tooltip>
                       <Tooltip text="Zoom In" position="bottom">
                         <button
                           onClick={handleZoomIn}
@@ -372,9 +323,11 @@ function Terminal() {
                       )}
                     </div>
 
-                    <button className="bg-accent text-ink px-3 py-1.5 rounded font-mono text-[10px] uppercase tracking-wider flex items-center gap-1.5 hover:opacity-90 transition-opacity">
-                       <Plus size={12} /> Alert
-                    </button>
+                    <Tooltip text="Coming Soon" position="bottom">
+                      <button className="bg-accent/50 text-ink/70 px-3 py-1.5 rounded font-mono text-[10px] uppercase tracking-wider flex items-center gap-1.5 cursor-not-allowed">
+                         <Plus size={12} /> Alert
+                      </button>
+                    </Tooltip>
                  </div>
               </div>
 
@@ -462,6 +415,7 @@ function Terminal() {
                           setDrawings={setDrawings}
                           showDrawings={showDrawings}
                           onPan={handlePan}
+                          chartData={chartData}
                         />
                       )}
                   </div>

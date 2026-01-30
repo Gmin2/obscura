@@ -14,12 +14,22 @@ interface Drawing {
   text?: string;
 }
 
+interface CandleData {
+  time: string;
+  open: number;
+  high: number;
+  low: number;
+  close: number;
+  volume?: number;
+}
+
 interface ChartOverlayProps {
   activeTool: DrawingTool;
   drawings: Drawing[];
   setDrawings: React.Dispatch<React.SetStateAction<Drawing[]>>;
   showDrawings: boolean;
   onPan?: (dx: number, dy: number) => void;
+  chartData?: CandleData[];
 }
 
 const ChartOverlay: React.FC<ChartOverlayProps> = ({
@@ -27,7 +37,8 @@ const ChartOverlay: React.FC<ChartOverlayProps> = ({
   drawings,
   setDrawings,
   showDrawings,
-  onPan
+  onPan,
+  chartData = []
 }) => {
   const svgRef = useRef<SVGSVGElement>(null);
   const [isDrawing, setIsDrawing] = useState(false);
@@ -336,6 +347,28 @@ const ChartOverlay: React.FC<ChartOverlayProps> = ({
     );
   };
 
+  // Get candle data at current mouse position
+  const getHoveredCandle = (): CandleData | null => {
+    if (!mousePos || !chartData.length) return null;
+    const svg = svgRef.current;
+    if (!svg) return null;
+
+    const { width } = svg.getBoundingClientRect();
+    const chartLeftMargin = 48; // Account for left toolbar
+    const chartRightMargin = 50; // Account for Y axis
+    const chartWidth = width - chartLeftMargin - chartRightMargin;
+
+    const adjustedX = mousePos.x - chartLeftMargin;
+    if (adjustedX < 0 || adjustedX > chartWidth) return null;
+
+    const candleIndex = Math.floor((adjustedX / chartWidth) * chartData.length);
+    const clampedIndex = Math.max(0, Math.min(chartData.length - 1, candleIndex));
+
+    return chartData[clampedIndex] || null;
+  };
+
+  const hoveredCandle = getHoveredCandle();
+
   const getCursor = () => {
     switch (activeTool) {
       case 'hand':
@@ -348,6 +381,35 @@ const ChartOverlay: React.FC<ChartOverlayProps> = ({
         return 'crosshair';
     }
   };
+
+  // Calculate tooltip position to stay within bounds
+  const getTooltipPosition = () => {
+    if (!mousePos) return { left: 0, top: 0 };
+    const svg = svgRef.current;
+    if (!svg) return { left: mousePos.x + 15, top: mousePos.y - 60 };
+
+    const { width, height } = svg.getBoundingClientRect();
+    const tooltipWidth = 120;
+    const tooltipHeight = 100;
+
+    let left = mousePos.x + 15;
+    let top = mousePos.y - 60;
+
+    // Keep tooltip within bounds
+    if (left + tooltipWidth > width) {
+      left = mousePos.x - tooltipWidth - 15;
+    }
+    if (top < 10) {
+      top = mousePos.y + 15;
+    }
+    if (top + tooltipHeight > height) {
+      top = height - tooltipHeight - 10;
+    }
+
+    return { left, top };
+  };
+
+  const tooltipPos = getTooltipPosition();
 
   return (
     <div className="absolute inset-0 z-10">
@@ -374,6 +436,60 @@ const ChartOverlay: React.FC<ChartOverlayProps> = ({
         {renderCurrentDrawing()}
         {renderCrosshair()}
       </svg>
+
+      {/* OHLC Tooltip when crosshair is active */}
+      {activeTool === 'crosshair' && mousePos && hoveredCandle && (
+        <div
+          className="absolute pointer-events-none"
+          style={{
+            left: tooltipPos.left,
+            top: tooltipPos.top,
+            zIndex: 50,
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: 'rgba(26, 26, 26, 0.95)',
+              border: '1px solid rgba(230, 226, 214, 0.2)',
+              borderRadius: '8px',
+              padding: '8px 12px',
+              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.5)',
+              fontFamily: 'JetBrains Mono, monospace',
+              minWidth: '110px',
+            }}
+          >
+            <div style={{ fontSize: '10px', color: 'rgba(230, 226, 214, 0.5)', marginBottom: '6px' }}>
+              {hoveredCandle.time}
+            </div>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2px 12px', fontSize: '11px' }}>
+              <span style={{ color: 'rgba(230, 226, 214, 0.5)' }}>O</span>
+              <span style={{ color: '#E6E2D6', textAlign: 'right' }}>{hoveredCandle.open.toFixed(2)}</span>
+              <span style={{ color: 'rgba(230, 226, 214, 0.5)' }}>H</span>
+              <span style={{ color: '#4ADE80', textAlign: 'right' }}>{hoveredCandle.high.toFixed(2)}</span>
+              <span style={{ color: 'rgba(230, 226, 214, 0.5)' }}>L</span>
+              <span style={{ color: '#F87171', textAlign: 'right' }}>{hoveredCandle.low.toFixed(2)}</span>
+              <span style={{ color: 'rgba(230, 226, 214, 0.5)' }}>C</span>
+              <span style={{
+                color: hoveredCandle.close >= hoveredCandle.open ? '#4ADE80' : '#F87171',
+                textAlign: 'right'
+              }}>
+                {hoveredCandle.close.toFixed(2)}
+              </span>
+            </div>
+            <div style={{
+              marginTop: '6px',
+              paddingTop: '6px',
+              borderTop: '1px solid rgba(230, 226, 214, 0.1)',
+              fontSize: '10px',
+              textAlign: 'center',
+              color: hoveredCandle.close >= hoveredCandle.open ? '#4ADE80' : '#F87171',
+            }}>
+              {hoveredCandle.close >= hoveredCandle.open ? '+' : ''}
+              {(((hoveredCandle.close - hoveredCandle.open) / hoveredCandle.open) * 100).toFixed(2)}%
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Text Input Modal */}
       {textInput.show && textInput.pos && (
