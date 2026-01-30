@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Hero3D } from './Hero3D';
 
 export const Hero = () => {
@@ -26,10 +27,10 @@ export const Hero = () => {
 
              <div className="flex flex-col sm:flex-row gap-4">
                {/* Primary Button */}
-               <a href="/terminal" className="relative group bg-ink text-paper px-8 py-4 font-mono text-sm uppercase tracking-wider font-bold clip-chamfer-sm overflow-hidden transition-transform active:scale-95 text-center">
+               <Link to="/terminal" className="relative group bg-ink text-paper px-8 py-4 font-mono text-sm uppercase tracking-wider font-bold clip-chamfer-sm overflow-hidden transition-transform active:scale-95 text-center">
                  <span className="relative z-10">Launch App</span>
                  <div className="absolute inset-0 bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
-               </a>
+               </Link>
 
                {/* Secondary Button - Fixed Chamfer Outline */}
                <a href="https://github.com/Gmin2/obscura" target="_blank" rel="noopener noreferrer" className="group relative w-auto inline-flex items-center justify-center font-mono text-sm uppercase tracking-wider font-bold text-ink transition-transform active:scale-95">

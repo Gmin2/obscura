@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export const SiteFooter = () => {
   return (
     <footer className="bg-charcoal text-paper border-t border-grid py-8">
@@ -5,7 +7,7 @@ export const SiteFooter = () => {
         <div className="flex flex-col md:flex-row justify-between items-center gap-6">
 
           {/* Logo & Brand */}
-          <div className="flex items-center gap-3">
+          <Link to="/" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
             <div className="w-6 h-6 bg-ink rounded-md flex items-center justify-center text-paper">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
@@ -13,7 +15,7 @@ export const SiteFooter = () => {
             </div>
             <span className="font-serif text-lg tracking-tight">Obscura</span>
             <span className="font-mono text-[10px] text-paper/40 ml-2">// Built on Aleo</span>
-          </div>
+          </Link>
 
           {/* GitHub Link */}
           <a

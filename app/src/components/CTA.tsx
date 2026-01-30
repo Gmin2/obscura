@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom';
+
 export const CTA = () => {
   return (
     <div className="py-24 border-t border-grid relative overflow-hidden bg-accent text-ink selection:bg-ink selection:text-paper">
@@ -30,12 +32,12 @@ export const CTA = () => {
                     Connect wallet to begin...
                 </div>
 
-                <a href="/terminal" className="relative group w-full sm:w-auto min-w-[300px] h-20 bg-ink text-paper clip-chamfer-md flex items-center justify-between px-8 transition-transform hover:-translate-y-1 active:translate-y-0">
+                <Link to="/terminal" className="relative group w-full sm:w-auto min-w-[300px] h-20 bg-ink text-paper clip-chamfer-md flex items-center justify-between px-8 transition-transform hover:-translate-y-1 active:translate-y-0">
                     <span className="font-mono text-xl tracking-wider font-bold">START TRADING</span>
                     <span className="w-8 h-8 border border-paper/30 flex items-center justify-center group-hover:bg-accent group-hover:text-ink group-hover:border-transparent transition-colors">
                         →
                     </span>
-                </a>
+                </Link>
 
                 <div className="flex gap-8 mt-4 font-mono text-xs border-t border-ink/20 pt-4 w-full">
                     <span>TESTNET_LIVE</span>

@@ -23,190 +23,169 @@ import {
 } from 'lucide-react';
 
 
-// --- Feature Icons ---
+// --- Feature Icons (Privacy Theme) ---
 
+// Icon 1: Private Records - Encrypted document with lock
 export const IconSmartActions = () => (
   <svg viewBox="0 0 200 200" className="w-full h-full text-ink" fill="none" stroke="currentColor" strokeWidth="1.5">
     <style>{`
-      .spin-cw { animation: spin 12s linear infinite; }
-      .spin-ccw { animation: spin 12s linear infinite reverse; }
-      .spin-inner { animation: spin 6s linear infinite reverse; }
-      
-      @keyframes spin {
-        from { transform: rotate(0deg); }
-        to { transform: rotate(360deg); }
+      .lock-pulse { animation: lockPulse 2s ease-in-out infinite; }
+      .encrypt-float { animation: encryptFloat 3s ease-in-out infinite; }
+      .encrypt-float-2 { animation: encryptFloat 3s ease-in-out infinite; animation-delay: 1s; }
+      .encrypt-float-3 { animation: encryptFloat 3s ease-in-out infinite; animation-delay: 2s; }
+
+      @keyframes lockPulse {
+        0%, 100% { opacity: 1; transform: scale(1); }
+        50% { opacity: 0.7; transform: scale(1.05); }
+      }
+      @keyframes encryptFloat {
+        0%, 100% { opacity: 0.3; transform: translateY(0); }
+        50% { opacity: 0.8; transform: translateY(-5px); }
       }
     `}</style>
-    
-    {/* 
-       Circles are nested and touching the bottom (y=180).
-       Gap Analysis:
-       C1 Top: 20. C2 Top: 60. Midpoint: 40.
-       C2 Top: 60. C3 Top: 100. Midpoint: 80.
-       C3 Top: 100. C4 Top: 140. Midpoint: 120.
-    */}
 
-    {/* STATIC LABELS LAYER (Fixed in space - Upper Center in gaps) */}
-    
-    {/* Gap 1 (Between Outer and C2) - y=40 */}
-    <g transform="translate(100, 40)">
-        {/* Minus Sign */}
-        <line x1="-8" y1="0" x2="8" y2="0" strokeWidth="2" />
+    {/* Document outline */}
+    <rect x="45" y="30" width="110" height="140" rx="4" strokeWidth="2" />
+    <path d="M45 30 L45 50 L65 50 L65 30" strokeWidth="2" fill="none" />
+
+    {/* Encrypted content lines */}
+    <g className="encrypt-float">
+      <rect x="60" y="70" width="80" height="8" rx="2" fill="currentColor" opacity="0.2" stroke="none" />
     </g>
-    
-    {/* Gap 2 (Between C2 and C3) - y=80 */}
-    <g transform="translate(100, 80)">
-        {/* Plus Sign */}
-        <line x1="-8" y1="0" x2="8" y2="0" strokeWidth="2" />
-        <line x1="0" y1="-8" x2="0" y2="8" strokeWidth="2" />
+    <g className="encrypt-float-2">
+      <rect x="60" y="90" width="65" height="8" rx="2" fill="currentColor" opacity="0.2" stroke="none" />
     </g>
-    
-    {/* Gap 3 (Between C3 and Inner) - y=120 */}
-    <g transform="translate(100, 120)">
-        {/* Minus Sign */}
-        <line x1="-8" y1="0" x2="8" y2="0" strokeWidth="2" />
+    <g className="encrypt-float-3">
+      <rect x="60" y="110" width="75" height="8" rx="2" fill="currentColor" opacity="0.2" stroke="none" />
     </g>
 
-
-    {/* ANIMATED CIRCLES LAYER - Removed dashes (dots) */}
-    
-    {/* Circle 1 (Outer) - R=80, Center(100, 100) */}
-    <g style={{ transformOrigin: '100px 100px' }} className="spin-cw">
-       {/* Circle solid line */}
-       <circle cx="100" cy="100" r="80" /> 
-       {/* Small notches at cardinal points */}
-       <path d="M100 20 L100 15" strokeWidth="2" /> 
-       <path d="M100 185 L100 180" strokeWidth="2" /> 
-       <path d="M180 100 L185 100" strokeWidth="2" />
-       <path d="M20 100 L15 100" strokeWidth="2" />
+    {/* Lock icon in center-bottom */}
+    <g className="lock-pulse" style={{ transformOrigin: '100px 150px' }}>
+      {/* Lock body */}
+      <rect x="85" y="145" width="30" height="24" rx="3" strokeWidth="2" />
+      {/* Lock shackle */}
+      <path d="M90 145 L90 138 A10 10 0 0 1 110 138 L110 145" strokeWidth="2" fill="none" />
+      {/* Keyhole */}
+      <circle cx="100" cy="155" r="3" fill="currentColor" stroke="none" />
+      <rect x="98" y="155" width="4" height="6" fill="currentColor" stroke="none" />
     </g>
 
-    {/* Circle 2 - R=60, Center(100, 120) */}
-    <g style={{ transformOrigin: '100px 120px' }} className="spin-ccw">
-       <circle cx="100" cy="120" r="60" />
-       {/* Notch */}
-       <path d="M100 60 L100 56" strokeWidth="2" />
-    </g>
-
-    {/* Circle 3 - R=40, Center(100, 140) */}
-    <g style={{ transformOrigin: '100px 140px' }} className="spin-cw">
-       <circle cx="100" cy="140" r="40" />
-       {/* Notch */}
-       <path d="M100 100 L100 96" strokeWidth="2" />
-    </g>
-
-    {/* Circle 4 (Core) - R=20, Center(100, 160) - THIS ONE SPINS WITH LABEL */}
-    <g style={{ transformOrigin: '100px 160px' }} className="spin-inner">
-       <circle cx="100" cy="160" r="20" />
-       {/* Marker: Plus (Spins with the circle) - kept as requested for smallest circle */}
-       <line x1="94" y1="160" x2="106" y2="160" strokeWidth="2" />
-       <line x1="100" y1="154" x2="100" y2="166" strokeWidth="2" />
-    </g>
+    {/* Corner markers */}
+    <path d="M45 45 L35 45 L35 30" strokeWidth="1" opacity="0.4" />
+    <path d="M155 170 L165 170 L165 155" strokeWidth="1" opacity="0.4" />
   </svg>
 );
 
+// Icon 2: Commitment Scheme - Value transforms to hash
 export const IconAutoResolve = () => (
   <svg viewBox="0 0 200 200" className="w-full h-full text-ink" fill="none" stroke="currentColor" strokeWidth="1.5">
     <style>{`
-      /* Harmonic Resonance Animation */
-      .resonance-bar { animation: resonance 3s ease-in-out infinite; }
-      
-      /* Staggered delays for wave effect */
-      .res-1 { animation-delay: 0.0s; }
-      .res-2 { animation-delay: 0.2s; }
-      .res-3 { animation-delay: 0.4s; }
-      .res-4 { animation-delay: 0.6s; }
-      .res-5 { animation-delay: 0.8s; }
-      .res-6 { animation-delay: 1.0s; }
+      .hash-reveal { animation: hashReveal 4s ease-in-out infinite; }
+      .arrow-pulse { animation: arrowPulse 2s ease-in-out infinite; }
 
-      @keyframes resonance {
-        0%, 100% { 
-          opacity: 0.3; 
-          stroke-width: 1.5px;
-        }
-        50% { 
-          opacity: 1; 
-          stroke-width: 2.5px;
-          stroke-opacity: 0.6; /* Lighter shade of diagram color (Ink) via opacity */
-        }
+      @keyframes hashReveal {
+        0%, 20% { opacity: 1; }
+        40%, 60% { opacity: 0.3; }
+        80%, 100% { opacity: 1; }
+      }
+      @keyframes arrowPulse {
+        0%, 100% { opacity: 0.5; transform: translateX(0); }
+        50% { opacity: 1; transform: translateX(3px); }
       }
     `}</style>
-    
-    {/* Base Structure (Static Outline) */}
-    <path d="M30 170 L100 30 L170 170 Z" strokeWidth="2" />
-    <line x1="100" y1="30" x2="100" y2="170" strokeWidth="2" />
 
-    {/* Animated Levels */}
+    {/* Left box - Value (hidden) */}
     <g>
-        {/* Level 1 (Bottom) */}
-        <path d="M30 170 L100 146.6 L170 170" className="resonance-bar res-1" />
-        
-        {/* Level 2 */}
-        <path d="M30 170 L100 123.3 L170 170" className="resonance-bar res-2" />
-        
-        {/* Level 3 */}
-        <path d="M30 170 L100 100 L170 170" className="resonance-bar res-3" />
-        
-        {/* Level 4 */}
-        <path d="M30 170 L100 76.6 L170 170" className="resonance-bar res-4" />
-        
-        {/* Level 5 */}
-        <path d="M30 170 L100 53.3 L170 170" className="resonance-bar res-5" />
-        
-        {/* Level 6 (Top) */}
-        <path d="M30 170 L100 30 L170 170" className="resonance-bar res-6" fill="transparent"/>
+      <rect x="20" y="70" width="60" height="60" rx="4" strokeWidth="2" />
+      <text x="50" y="105" textAnchor="middle" fontSize="14" fontFamily="monospace" fill="currentColor" stroke="none">$$$</text>
+      <text x="50" y="145" textAnchor="middle" fontSize="8" fontFamily="monospace" fill="currentColor" opacity="0.5" stroke="none">VALUE</text>
     </g>
 
+    {/* Arrow with hash function */}
+    <g className="arrow-pulse" style={{ transformOrigin: '100px 100px' }}>
+      <path d="M85 100 L115 100" strokeWidth="2" />
+      <path d="M110 95 L115 100 L110 105" strokeWidth="2" fill="none" />
+    </g>
+    <text x="100" y="85" textAnchor="middle" fontSize="8" fontFamily="monospace" fill="currentColor" opacity="0.6" stroke="none">Poseidon</text>
+
+    {/* Right box - Commitment (hash) */}
+    <g className="hash-reveal">
+      <rect x="120" y="70" width="60" height="60" rx="4" strokeWidth="2" />
+      <text x="150" y="98" textAnchor="middle" fontSize="10" fontFamily="monospace" fill="currentColor" stroke="none">0x7f</text>
+      <text x="150" y="112" textAnchor="middle" fontSize="10" fontFamily="monospace" fill="currentColor" stroke="none">8a3b</text>
+      <text x="150" y="145" textAnchor="middle" fontSize="8" fontFamily="monospace" fill="currentColor" opacity="0.5" stroke="none">COMMIT</text>
+    </g>
+
+    {/* Salt indicator */}
+    <g>
+      <text x="100" y="165" textAnchor="middle" fontSize="8" fontFamily="monospace" fill="currentColor" opacity="0.4" stroke="none">+ salt</text>
+    </g>
+
+    {/* Technical frame */}
+    <rect x="15" y="55" width="170" height="120" rx="2" strokeWidth="1" strokeDasharray="4 4" opacity="0.2" />
   </svg>
 );
 
+// Icon 3: ZK Matching - Two orders match via proof
 export const IconAgentAssist = () => (
   <svg viewBox="0 0 200 200" className="w-full h-full text-ink" fill="none" stroke="currentColor" strokeWidth="1.5">
     <style>{`
-      .breathe-circle { animation: breathe 6s ease-in-out infinite; }
-      .b-1 { animation-delay: 0s; }
-      .b-2 { animation-delay: 2s; }
-      .b-3 { animation-delay: 4s; }
+      .order-left { animation: orderLeft 3s ease-in-out infinite; }
+      .order-right { animation: orderRight 3s ease-in-out infinite; }
+      .proof-glow { animation: proofGlow 3s ease-in-out infinite; }
+      .check-appear { animation: checkAppear 3s ease-in-out infinite; }
 
-      @keyframes breathe {
-        0%, 100% { stroke-opacity: 0.4; }
-        50% { stroke-opacity: 1; }
+      @keyframes orderLeft {
+        0%, 100% { transform: translateX(0); opacity: 0.6; }
+        50% { transform: translateX(10px); opacity: 1; }
+      }
+      @keyframes orderRight {
+        0%, 100% { transform: translateX(0); opacity: 0.6; }
+        50% { transform: translateX(-10px); opacity: 1; }
+      }
+      @keyframes proofGlow {
+        0%, 100% { opacity: 0.3; }
+        50% { opacity: 1; }
+      }
+      @keyframes checkAppear {
+        0%, 30% { opacity: 0; transform: scale(0.5); }
+        50%, 100% { opacity: 1; transform: scale(1); }
       }
     `}</style>
 
-    {/* Definitions for strict clipping */}
-    <defs>
-      <clipPath id="clip-top"><circle cx="100" cy="80" r="45" /></clipPath>
-      <clipPath id="clip-left"><circle cx="75" cy="125" r="45" /></clipPath>
-      <clipPath id="clip-right"><circle cx="125" cy="125" r="45" /></clipPath>
-    </defs>
-
-    {/* Top Circle */}
-    <circle cx="100" cy="80" r="45" className="breathe-circle b-1" />
-    {/* Left Circle */}
-    <circle cx="75" cy="125" r="45" className="breathe-circle b-2" />
-    {/* Right Circle */}
-    <circle cx="125" cy="125" r="45" className="breathe-circle b-3" />
-    
-    {/* 
-        Hatching Lines confined STRICTLY to the triple intersection.
-        We achieve this by nesting the clip paths.
-        The lines will only appear where ALL THREE clip paths overlap.
-    */}
-    <g clipPath="url(#clip-top)">
-      <g clipPath="url(#clip-left)">
-        <g clipPath="url(#clip-right)">
-           {/* Static Diagonal Lines (Bottom-Left to Top-Right) to match reference */}
-           {/* Center of intersection is approx 100, 110. Lines span broadly and get clipped. */}
-           <line x1="80" y1="130" x2="130" y2="80" strokeWidth="1.5" />
-           <line x1="85" y1="135" x2="135" y2="85" strokeWidth="1.5" />
-           <line x1="75" y1="125" x2="125" y2="75" strokeWidth="1.5" />
-           <line x1="90" y1="140" x2="140" y2="90" strokeWidth="1.5" />
-           <line x1="70" y1="120" x2="120" y2="70" strokeWidth="1.5" />
-        </g>
-      </g>
+    {/* Left order (BUY) */}
+    <g className="order-left" style={{ transformOrigin: '50px 80px' }}>
+      <rect x="25" y="55" width="50" height="50" rx="4" strokeWidth="2" />
+      <text x="50" y="85" textAnchor="middle" fontSize="12" fontFamily="monospace" fill="currentColor" stroke="none">BUY</text>
+      <rect x="30" y="60" width="15" height="6" rx="1" fill="currentColor" opacity="0.3" stroke="none" />
     </g>
 
+    {/* Right order (SELL) */}
+    <g className="order-right" style={{ transformOrigin: '150px 80px' }}>
+      <rect x="125" y="55" width="50" height="50" rx="4" strokeWidth="2" />
+      <text x="150" y="85" textAnchor="middle" fontSize="12" fontFamily="monospace" fill="currentColor" stroke="none">SELL</text>
+      <rect x="155" y="60" width="15" height="6" rx="1" fill="currentColor" opacity="0.3" stroke="none" />
+    </g>
+
+    {/* Connection lines to center */}
+    <path d="M75 80 L90 100" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.4" />
+    <path d="M125 80 L110 100" strokeWidth="1.5" strokeDasharray="3 3" opacity="0.4" />
+
+    {/* Center proof circle */}
+    <g className="proof-glow" style={{ transformOrigin: '100px 115px' }}>
+      <circle cx="100" cy="115" r="25" strokeWidth="2" />
+      <text x="100" y="112" textAnchor="middle" fontSize="8" fontFamily="monospace" fill="currentColor" stroke="none">ZK</text>
+      <text x="100" y="122" textAnchor="middle" fontSize="8" fontFamily="monospace" fill="currentColor" stroke="none">PROOF</text>
+    </g>
+
+    {/* Checkmark below */}
+    <g className="check-appear" style={{ transformOrigin: '100px 160px' }}>
+      <circle cx="100" cy="160" r="15" strokeWidth="2" />
+      <path d="M92 160 L98 166 L110 154" strokeWidth="2.5" fill="none" />
+    </g>
+
+    {/* Label */}
+    <text x="100" y="190" textAnchor="middle" fontSize="8" fontFamily="monospace" fill="currentColor" opacity="0.5" stroke="none">VERIFIED</text>
   </svg>
 );
 
