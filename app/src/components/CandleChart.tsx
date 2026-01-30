@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useMemo, useEffect, useRef } from 'react';
 import { ResponsiveContainer, ComposedChart, XAxis, YAxis, Tooltip, Bar, ReferenceLine, CartesianGrid, Area, Line } from 'recharts';
 import type { CandleData } from '../types';
 
@@ -68,17 +68,22 @@ const CustomBar = (props: any) => {
   )
 }
 
-// Custom OHLC Tooltip
-const CustomTooltip = ({ active, payload, onHover }: any) => {
-  if (active && payload && payload.length > 0) {
-    const data = payload[0].payload;
-    const change = data.close - data.open;
-    const changePercent = ((change / data.open) * 100);
-    const isUp = change >= 0;
+// Custom OHLC Tooltip - uses useEffect to avoid state updates during render
+const CustomTooltip = ({ active, payload, onHoverRef }: any) => {
+  const greenColor = '#4ADE80';
+  const redColor = '#F87171';
+  const paperColor = '#E6E2D6';
+  const mutedColor = 'rgba(230, 226, 214, 0.5)';
 
-    // Report to parent
-    if (onHover) {
-      onHover({
+  // Report hover state after render to avoid state updates during render
+  useEffect(() => {
+    if (!onHoverRef?.current) return;
+
+    if (active && payload && payload.length > 0) {
+      const data = payload[0].payload;
+      const change = data.close - data.open;
+      const changePercent = ((change / data.open) * 100);
+      onHoverRef.current({
         time: data.time,
         open: data.open,
         high: data.high,
@@ -88,14 +93,17 @@ const CustomTooltip = ({ active, payload, onHover }: any) => {
         change,
         changePercent
       });
+    } else {
+      onHoverRef.current(null);
     }
+  }, [active, payload, onHoverRef]);
 
-    const greenColor = '#4ADE80';
-    const redColor = '#F87171';
-    const paperColor = '#E6E2D6';
-    const mutedColor = 'rgba(230, 226, 214, 0.5)';
+  if (active && payload && payload.length > 0) {
+    const data = payload[0].payload;
+    const change = data.close - data.open;
+    const changePercent = ((change / data.open) * 100);
+    const isUp = change >= 0;
 
-    // Show tooltip on chart
     return (
       <div
         style={{
@@ -132,14 +140,16 @@ const CustomTooltip = ({ active, payload, onHover }: any) => {
         </div>
       </div>
     );
-  } else if (onHover) {
-    onHover(null);
   }
 
   return null;
 };
 
 const CandleChart: React.FC<CandleChartProps> = ({ data, isDark, type = 'candle', onHover, zoomDomain }) => {
+  // Use ref for callback to avoid state updates during render
+  const onHoverRef = useRef(onHover);
+  onHoverRef.current = onHover;
+
   const processedData = useMemo(() => {
     let slicedData = data;
 
@@ -189,7 +199,7 @@ const CandleChart: React.FC<CandleChartProps> = ({ data, isDark, type = 'candle'
             width={55}
           />
           <Tooltip
-            content={<CustomTooltip onHover={onHover} />}
+            content={<CustomTooltip onHoverRef={onHoverRef} />}
             cursor={{ stroke: '#F25C33', strokeWidth: 1, strokeDasharray: '4 4' }}
             wrapperStyle={{ zIndex: 100, outline: 'none' }}
             allowEscapeViewBox={{ x: true, y: true }}

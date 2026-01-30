@@ -1,4 +1,3 @@
-import React from 'react';
 import { DiamondIcon } from './Icons';
 
 export const SectionHeader = ({ title }: { title: string }) => {

@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react';
 import { EyeOff, RefreshCw, Loader2 } from 'lucide-react';
-import { useOrderBook, useOrders } from '../hooks/useDarkpool.ts';
+import { useOrderBook } from '../hooks/useDarkpool.ts';
 import { useWallet } from '@demox-labs/aleo-wallet-adapter-react';
 import { createMockOrderBook, type OrderBookEntry } from '../aleo/index.ts';
 
@@ -56,7 +56,7 @@ const OrderBook: React.FC<OrderBookProps> = ({
   const { connected } = useWallet();
   const { orderBook: realOrderBook, loading } = useOrderBook();
   /** Manual refresh available via useOrders().refresh - not auto-called to avoid wallet popups */
-  const _ordersHook = useOrders();
+  // const _ordersHook = useOrders();
 
   const [mockOrderBook, setMockOrderBook] = useState<{
     bids: OrderBookEntry[];

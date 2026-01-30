@@ -5,4 +5,8 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
   ],
+  // Build web workers as ES modules so top-level await is supported
+  worker: {
+    format: 'es',
+  },
 })
