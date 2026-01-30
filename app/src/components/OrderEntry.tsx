@@ -1,14 +1,22 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-import { Lock, Zap, RefreshCw, Loader2, ChevronDown } from 'lucide-react';
-import { useAleo, useWallet } from '../hooks/useAleo.ts';
-import { OrderSide, getDarkpoolService, DEFAULT_QUOTE_ASSET, TRADEABLE_ASSETS } from '../aleo/index.ts';
+import { Lock, Zap, RefreshCw, Loader2, ChevronDown, CheckCircle, ExternalLink } from 'lucide-react';
+import { useDarkpoolTransactions } from '../hooks/useDarkpool.ts';
+
+/** Default quote asset (USDC) */
+const DEFAULT_QUOTE_ASSET = '2';
+
+/** Tradeable assets list */
+const TRADEABLE_ASSETS = [
+  { id: '1', symbol: 'ETH', name: 'Ethereum' },
+  { id: '3', symbol: 'BTC', name: 'Bitcoin' },
+  { id: '4', symbol: 'ALEO', name: 'Aleo' },
+];
 
 interface OrderEntryProps {
-  programSource?: string;
-  onOrderPlaced?: (order: { orderId: string; side: string; price: number; amount: number }) => void;
+  onOrderPlaced?: (order: { orderId: string; side: string; price: number; amount: number; txId?: string }) => void;
 }
 
-const OrderEntry: React.FC<OrderEntryProps> = ({ programSource, onOrderPlaced }) => {
+const OrderEntry: React.FC<OrderEntryProps> = ({ onOrderPlaced }) => {
   const [side, setSide] = useState<'buy' | 'sell'>('buy');
   const [orderType, setOrderType] = useState('Limit');
   const [price, setPrice] = useState('2983.18');
@@ -17,12 +25,10 @@ const OrderEntry: React.FC<OrderEntryProps> = ({ programSource, onOrderPlaced })
   const [sliderValue, setSliderValue] = useState(50);
   const [selectedAsset, setSelectedAsset] = useState(TRADEABLE_ASSETS[0]);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const { loading: executing, error: execError } = useAleo();
-  const { connected, publicKey } = useWallet();
-
-  const darkpool = getDarkpoolService();
+  const { placeOrder, loading: executing, error: execError, connected, lastTxId } = useDarkpoolTransactions();
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -43,45 +49,39 @@ const OrderEntry: React.FC<OrderEntryProps> = ({ programSource, onOrderPlaced })
   }, []);
 
   const handleSubmit = useCallback(async () => {
-    if (!programSource) {
-      console.warn('No program source provided, using mock mode');
-      onOrderPlaced?.({
-        orderId: `mock-${Date.now()}`,
-        side,
-        price: parseFloat(price),
-        amount: parseFloat(amount),
-      });
+    if (!connected) {
+      console.warn('Wallet not connected');
       return;
     }
 
-    try {
-      const orderSide = side === 'buy' ? OrderSide.BUY : OrderSide.SELL;
+    setSuccessMessage(null);
 
-      const result = await darkpool.placeOrder(
-        {
-          side: orderSide,
-          baseAsset: selectedAsset.id,
-          quoteAsset: DEFAULT_QUOTE_ASSET,
-          amount: parseFloat(amount),
-          price: parseFloat(price.replace(/,/g, '')),
-        },
-        publicKey || '',
-        programSource,
-        false
-      );
+    const result = await placeOrder(
+      side,
+      selectedAsset.id,
+      DEFAULT_QUOTE_ASSET,
+      parseFloat(amount),
+      parseFloat(price.replace(/,/g, ''))
+    );
 
-      console.log('Order placed:', result);
+    if (result.success) {
+      console.log('Order placed:', result.txId);
+      setSuccessMessage(`Order submitted! TX: ${result.txId?.slice(0, 12)}...`);
 
       onOrderPlaced?.({
-        orderId: result.order.order_id || `order-${Date.now()}`,
+        orderId: result.txId || `order-${Date.now()}`,
         side,
         price: parseFloat(price.replace(/,/g, '')),
         amount: parseFloat(amount),
+        txId: result.txId,
       });
-    } catch (err) {
-      console.error('Failed to place order:', err);
+
+      /** Clear success message after 5 seconds */
+      setTimeout(() => setSuccessMessage(null), 5000);
+    } else {
+      console.error('Failed to place order:', result.error);
     }
-  }, [side, price, amount, programSource, publicKey, darkpool, onOrderPlaced, selectedAsset]);
+  }, [side, price, amount, connected, placeOrder, onOrderPlaced, selectedAsset]);
 
   const formatPrice = (value: string) => {
     const num = parseFloat(value.replace(/,/g, ''));
@@ -224,6 +224,24 @@ const OrderEntry: React.FC<OrderEntryProps> = ({ programSource, onOrderPlaced })
         </div>
       </div>
 
+      {/* Success Message */}
+      {successMessage && (
+        <div className="mt-2 p-2 bg-q-green/10 border border-q-green/30 rounded text-[10px] font-mono text-q-green flex items-center gap-2">
+          <CheckCircle size={12} />
+          {successMessage}
+          {lastTxId && (
+            <a
+              href={`https://explorer.aleo.org/transaction/${lastTxId}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="ml-auto hover:text-q-green/80"
+            >
+              <ExternalLink size={10} />
+            </a>
+          )}
+        </div>
+      )}
+
       {/* Error Display */}
       {execError && (
         <div className="mt-2 p-2 bg-q-red/10 border border-q-red/30 rounded text-[10px] font-mono text-q-red">
@@ -234,10 +252,12 @@ const OrderEntry: React.FC<OrderEntryProps> = ({ programSource, onOrderPlaced })
       {/* Submit Button */}
       <button
         onClick={handleSubmit}
-        disabled={executing}
+        disabled={executing || !connected}
         className={`mt-4 w-full py-3 rounded-lg font-mono text-xs uppercase tracking-widest font-bold active:scale-[0.98] transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed ${side === 'buy' ? 'bg-q-green text-ink' : 'bg-q-red text-white'}`}
       >
-        {executing ? (
+        {!connected ? (
+          'Connect Wallet'
+        ) : executing ? (
           <>
             <Loader2 size={14} className="animate-spin" />
             Processing...

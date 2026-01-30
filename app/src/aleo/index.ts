@@ -6,3 +6,4 @@
 export * from './types.ts';
 export * from './utils.ts';
 export * from './darkpool.ts';
+export * from './transactions.ts';

@@ -18,10 +18,16 @@ function toScaledString(value: number): string {
   return `${scaled}u128`;
 }
 
-/** Generate a random salt as field */
+/** Generate a random salt as scalar */
 function generateSalt(): string {
   const random = Math.floor(Math.random() * 1000000000);
-  return `${random}field`;
+  return `${random}scalar`;
+}
+
+/** Get current timestamp as u64 */
+function getTimestamp(): string {
+  const timestamp = Math.floor(Date.now() / 1000);
+  return `${timestamp}u64`;
 }
 
 /** Format address for Leo */
@@ -63,7 +69,8 @@ export function createPlaceOrderTransaction(
     formatField(quoteAsset),           // quote_asset: field
     toScaledString(amount),            // amount: u128
     toScaledString(price),             // price: u128
-    generateSalt(),                    // salt: field
+    generateSalt(),                    // salt: scalar
+    getTimestamp(),                    // timestamp: u64
   ];
 
   return Transaction.createTransaction(

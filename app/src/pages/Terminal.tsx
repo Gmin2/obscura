@@ -3,6 +3,7 @@ import CandleChart, { type ChartType, type HoveredCandle } from '../components/C
 import ChartOverlay, { type DrawingTool } from '../components/ChartOverlay';
 import OrderBook from '../components/OrderBook';
 import OrderEntry from '../components/OrderEntry';
+import MintTokens from '../components/MintTokens';
 import Tooltip from '../components/Tooltip';
 import AppTopBar from '../components/AppTopBar';
 import { MOCK_CANDLES, getCandlesForTimeframe } from '../constants';
@@ -39,6 +40,7 @@ interface Drawing {
 
 function Terminal() {
   const [activeTab, setActiveTab] = useState<'book' | 'trades'>('book');
+  const [rightPanelTab, setRightPanelTab] = useState<'trade' | 'mint'>('trade');
   const [timeFrame, setTimeFrame] = useState('1H');
   const [chartData, setChartData] = useState(MOCK_CANDLES);
   const [chartType, setChartType] = useState<ChartType>('candle');
@@ -426,9 +428,28 @@ function Terminal() {
         {/* Right Column: Order Entry & Book */}
         <div className="col-span-12 lg:col-span-4 flex flex-col gap-2 min-h-0">
 
-           {/* Order Entry Card */}
+           {/* Order Entry / Mint Card */}
            <div className="bg-ink border border-paper/10 rounded-lg p-3">
-              <OrderEntry />
+              {/* Tab selector for Trade vs Mint */}
+              <div className="flex items-center gap-2 mb-3 border-b border-paper/10 pb-2">
+                <button
+                  onClick={() => setRightPanelTab('trade')}
+                  className={`font-mono text-[10px] uppercase tracking-wider transition-colors px-2 py-1 rounded ${
+                    rightPanelTab === 'trade' ? 'bg-accent/10 text-accent' : 'text-paper/40 hover:text-paper'
+                  }`}
+                >
+                  Trade
+                </button>
+                <button
+                  onClick={() => setRightPanelTab('mint')}
+                  className={`font-mono text-[10px] uppercase tracking-wider transition-colors px-2 py-1 rounded ${
+                    rightPanelTab === 'mint' ? 'bg-accent/10 text-accent' : 'text-paper/40 hover:text-paper'
+                  }`}
+                >
+                  Mint Tokens
+                </button>
+              </div>
+              {rightPanelTab === 'trade' ? <OrderEntry /> : <MintTokens />}
            </div>
 
            {/* Order Book Card */}
