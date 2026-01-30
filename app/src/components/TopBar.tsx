@@ -1,64 +1,44 @@
-import React from 'react';
-import { DiamondIcon } from './Icons';
-
 export const TopBar = () => {
-  const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-  
   return (
     <div className="w-full border-b border-grid bg-paper text-ink font-mono text-xs tracking-wider uppercase sticky top-0 z-50">
         <div className="max-w-7xl mx-auto border-l border-r border-grid">
-            {/* Row 1: Timeline */}
-            <div className="flex border-b border-grid h-12 items-center">
-                <div className="w-16 sm:w-24 border-r border-grid flex items-center justify-center h-full text-ink/50 bg-paper">
-                    026
-                </div>
-                {/* Scrollable container for months on mobile */}
-                <div className="flex-1 flex justify-between px-4 sm:px-6 h-full items-center overflow-x-auto scrollbar-hide bg-paper">
-                    <div className="flex justify-between w-full min-w-[300px] gap-4 sm:gap-0">
-                        {months.map(m => (
-                            <span key={m} className={m === 'FEB' ? 'text-ink font-bold' : 'text-ink/40'}>{m}</span>
-                        ))}
-                    </div>
-                </div>
-                <div className="w-16 sm:w-24 border-l border-grid flex items-center justify-center h-full text-ink/50 bg-paper">
-                    027
-                </div>
-            </div>
+            {/* Single Row: Logo + Nav + Actions */}
+            <div className="flex h-14 items-center px-4 sm:px-6 justify-between relative overflow-hidden bg-paper">
 
-            {/* Row 2: Performance Strip */}
-            <div className="flex h-12 items-center px-4 sm:px-8 justify-between relative overflow-hidden bg-paper">
-                <div className="flex items-center gap-4 sm:gap-12 font-bold font-sans tracking-wide text-sm whitespace-nowrap">
-                    <span>PERFORMANCE</span>
-                </div>
-                
-                {/* Dotted fill - hidden on very small screens */}
-                <div className="flex-1 mx-4 sm:mx-8 opacity-40 overflow-hidden whitespace-nowrap text-[10px] tracking-[4px] hidden sm:block">
-                    +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-                </div>
+                {/* Logo */}
+                <a href="/" className="flex items-center gap-3 group">
+                    <div className="w-8 h-8 bg-ink rounded-lg flex items-center justify-center text-paper transition-colors group-hover:bg-accent">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                      </svg>
+                    </div>
+                    <span className="font-serif text-xl tracking-tight normal-case font-bold">Obscura</span>
+                </a>
 
-                <div className="flex items-center gap-4 sm:gap-8 text-sm">
-                    <div className="flex items-center gap-2">
-                         <span className="w-3 h-3 rotate-45 border border-current block" />
-                         <span className="hidden sm:inline">Resolution rate</span>
-                         <span className="sm:hidden">Res</span>
+                {/* Center Nav */}
+                <nav className="hidden md:flex items-center gap-8 text-sm font-medium">
+                    <a href="/terminal" className="text-ink/60 hover:text-ink transition-colors">Trade</a>
+                    <a href="https://github.com/Gmin2/obscura" target="_blank" rel="noopener noreferrer" className="text-ink/60 hover:text-ink transition-colors">Docs</a>
+                </nav>
+
+                {/* Right: Network Status + Launch Button */}
+                <div className="flex items-center gap-4 sm:gap-6">
+                    {/* Network Status */}
+                    <div className="hidden sm:flex items-center gap-2 text-[10px] text-ink/50">
+                        <span className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+                        <span>ALEO_TESTNET</span>
                     </div>
-                    <div className="flex items-center gap-2">
-                         <span className="w-3 h-3 rotate-45 bg-ink block" />
-                         <span className="hidden sm:inline">Quality rate</span>
-                         <span className="sm:hidden">Qual</span>
-                    </div>
+
+                    {/* Launch App Button */}
+                    <a
+                        href="/terminal"
+                        className="bg-ink text-paper px-4 py-2 text-xs font-bold tracking-wider hover:bg-accent transition-colors clip-chamfer-sm"
+                    >
+                        Launch App
+                    </a>
                 </div>
             </div>
         </div>
-        <style>{`
-          .scrollbar-hide::-webkit-scrollbar {
-              display: none;
-          }
-          .scrollbar-hide {
-              -ms-overflow-style: none;
-              scrollbar-width: none;
-          }
-        `}</style>
     </div>
   );
 };

@@ -1,84 +1,34 @@
-import React from 'react';
-import { DiamondIcon } from './Icons';
-
 export const SiteFooter = () => {
   return (
-    <footer className="bg-charcoal text-paper border-t border-grid pt-24 pb-12">
+    <footer className="bg-charcoal text-paper border-t border-grid py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-24 mb-24">
-            {/* Col 1: Brand */}
-            <div className="flex flex-col gap-6">
-                <div className="flex items-center gap-3">
-                    <div className="w-6 h-6 bg-accent clip-chamfer-sm" />
-                    <span className="font-serif text-2xl tracking-tight">System Inc.</span>
-                </div>
-                <p className="font-sans text-paper/60 text-sm leading-relaxed">
-                    Building the operating layer for automated enterprise intelligence.
-                </p>
-                <div className="mt-auto pt-6">
-                     <div className="font-mono text-xs text-paper/40">
-                        SF // NY // LDN // TYO
-                     </div>
-                </div>
-            </div>
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6">
 
-            {/* Col 2: Product */}
-            <div className="flex flex-col gap-6">
-                <h4 className="font-mono text-xs uppercase tracking-widest text-accent">Product</h4>
-                <ul className="space-y-4 font-mono text-sm text-paper/80">
-                    <li><a href="#" className="hover:text-white hover:underline decoration-accent underline-offset-4 decoration-2">Features</a></li>
-                    <li><a href="#" className="hover:text-white hover:underline decoration-accent underline-offset-4 decoration-2">Integrations</a></li>
-                    <li><a href="#" className="hover:text-white hover:underline decoration-accent underline-offset-4 decoration-2">Security</a></li>
-                    <li><a href="#" className="hover:text-white hover:underline decoration-accent underline-offset-4 decoration-2">Changelog</a></li>
-                </ul>
+          {/* Logo & Brand */}
+          <div className="flex items-center gap-3">
+            <div className="w-6 h-6 bg-ink rounded-md flex items-center justify-center text-paper">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+              </svg>
             </div>
+            <span className="font-serif text-lg tracking-tight">Obscura</span>
+            <span className="font-mono text-[10px] text-paper/40 ml-2">// Built on Aleo</span>
+          </div>
 
-            {/* Col 3: Company */}
-            <div className="flex flex-col gap-6">
-                <h4 className="font-mono text-xs uppercase tracking-widest text-accent">Company</h4>
-                <ul className="space-y-4 font-mono text-sm text-paper/80">
-                    <li><a href="#" className="hover:text-white hover:underline decoration-accent underline-offset-4 decoration-2">About</a></li>
-                    <li><a href="#" className="hover:text-white hover:underline decoration-accent underline-offset-4 decoration-2">Careers</a></li>
-                    <li><a href="#" className="hover:text-white hover:underline decoration-accent underline-offset-4 decoration-2">Blog</a></li>
-                    <li><a href="#" className="hover:text-white hover:underline decoration-accent underline-offset-4 decoration-2">Contact</a></li>
-                </ul>
-            </div>
+          {/* GitHub Link */}
+          <a
+            href="https://github.com/Gmin2/obscura"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 font-mono text-xs text-paper/60 hover:text-accent transition-colors"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            <span>github.com/Gmin2/obscura</span>
+          </a>
 
-            {/* Col 4: Newsletter */}
-            <div className="flex flex-col gap-6">
-                <h4 className="font-mono text-xs uppercase tracking-widest text-accent">Updates</h4>
-                <p className="font-sans text-xs text-paper/60">
-                    Subscribe to the engineering log.
-                </p>
-                <form className="flex flex-col gap-4">
-                    <div className="relative">
-                        <span className="absolute left-0 top-1/2 -translate-y-1/2 font-mono text-accent text-lg">{'>'}</span>
-                        <input 
-                            type="email" 
-                            placeholder="enter_email" 
-                            className="w-full bg-transparent border-b border-paper/20 py-3 pl-6 font-mono text-sm focus:outline-none focus:border-accent text-paper placeholder:text-paper/20 transition-colors"
-                        />
-                    </div>
-                    <button className="self-start text-xs font-mono uppercase border border-paper/20 px-4 py-2 hover:bg-paper hover:text-ink transition-colors clip-chamfer-sm">
-                        Subscribe
-                    </button>
-                </form>
-            </div>
         </div>
-
-        {/* Bottom Bar */}
-        <div className="border-t border-paper/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-6 font-mono text-[10px] text-paper/40 uppercase tracking-wider">
-            <div>
-                &copy; 2024 SYSTEM INC.
-            </div>
-            <div className="flex gap-8">
-                <a href="#" className="hover:text-paper transition-colors">Privacy Policy</a>
-                <a href="#" className="hover:text-paper transition-colors">Terms of Service</a>
-                <a href="#" className="hover:text-paper transition-colors">System Status: <span className="text-accent">● Online</span></a>
-            </div>
-        </div>
-
       </div>
     </footer>
   );

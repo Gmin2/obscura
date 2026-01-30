@@ -4,7 +4,7 @@ import { Hero } from '../components/Hero';
 import { Performance } from '../components/Performance';
 import { Infrastructure } from '../components/Infrastructure';
 import { SectionHeader } from '../components/SectionHeader';
-import { Footer as RoleBasedAccess } from '../components/Footer';
+import { Footer as PrivacyStack } from '../components/Footer';
 import { CTA } from '../components/CTA';
 import { SiteFooter } from '../components/SiteFooter';
 import { IconSmartActions, IconAutoResolve, IconAgentAssist } from '../components/Icons';
@@ -36,37 +36,37 @@ export default function HomePage() {
               
               <Performance />
 
-              <SectionHeader title="Features" />
-              
+              <SectionHeader title="How It Works" />
+
               {/* Card Grid */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 relative mb-24">
-                  <Card 
+                  <Card
                     variant="accent"
                     number="001"
-                    title="Smart Actions"
+                    title="Private Orders"
                     icon={<IconSmartActions />}
-                    description="Execute actions: refunds, plan changes, CRM updates"
+                    description="Orders stored as encrypted records. Only you can decrypt and view your trading data."
                   />
-                  
-                  <Card 
+
+                  <Card
                     variant="default"
                     number="002"
-                    title="Auto-Resolve"
+                    title="Commitments"
                     icon={<IconAutoResolve />}
-                    description="Deflection + safe auto-resolution with guardrails"
+                    description="Price and amount hidden via cryptographic commitments until order execution."
                   />
-                  
-                  <Card 
+
+                  <Card
                     variant="default"
                     number="003"
-                    title="Agent assist"
+                    title="ZK Matching"
                     icon={<IconAgentAssist />}
-                    description="Suggested replies, brand tone, cited knowledge, macros"
+                    description="Orders matched and verified using zero-knowledge proofs. No data revealed."
                   />
               </div>
 
-              {/* Role Based Access Section */}
-              <RoleBasedAccess />
+              {/* Privacy Stack Section */}
+              <PrivacyStack />
               
            </div>
            
