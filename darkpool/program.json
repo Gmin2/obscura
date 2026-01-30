@@ -1,9 +1,6 @@
 {
-  "program": "darkpool.aleo",
+  "program": "obscuradarkpool.aleo",
   "version": "0.1.0",
-  "description": "",
-  "license": "MIT",
-  "leo": "3.4.0",
-  "dependencies": null,
-  "dev_dependencies": null
+  "description": "Obscura Dark Pool - Privacy-preserving DEX on Aleo",
+  "license": "MIT"
 }

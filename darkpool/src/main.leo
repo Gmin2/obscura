@@ -2,7 +2,6 @@
  * Obscura Dark Pool
  *
  * A privacy-preserving decentralized exchange built on Aleo.
- * This is the main entry point that orchestrates all modules.
  *
  * Architecture:
  * - Token:      Private token records for trading
@@ -10,7 +9,7 @@
  * - Matching:   ZK-verified order matching
  * - Settlement: Atomic token swaps
  */
-program darkpool.aleo {
+program obscuradarkpool.aleo {
 
     const BUY: u8 = 0u8;
     const SELL: u8 = 1u8;

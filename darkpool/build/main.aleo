@@ -1,4 +1,4 @@
-program darkpool.aleo;
+program obscuradarkpool.aleo;
 
 record Token:
     owner as address.private;
@@ -158,7 +158,7 @@ function place_order:
     cast self.signer r13 r0 r1 r2 r3 r4 r5 0u128 r6 into r19 as Order.record;
     async place_order r13 r15 r16 r0 r18 into r20;
     output r19 as Order.record;
-    output r20 as darkpool.aleo/place_order.future;
+    output r20 as obscuradarkpool.aleo/place_order.future;
 
 finalize place_order:
     input r0 as field.public;
@@ -187,7 +187,7 @@ function cancel_order:
     cast r0.base_asset r0.quote_asset into r2 as MarketInput;
     hash.bhp256 r2 into r3 as field;
     async cancel_order r0.order_id r0.side r3 into r4;
-    output r4 as darkpool.aleo/cancel_order.future;
+    output r4 as obscuradarkpool.aleo/cancel_order.future;
 
 finalize cancel_order:
     input r0 as field.public;
@@ -245,7 +245,7 @@ function match_orders:
     output r23 as MatchReceipt.record;
     output r26 as Order.record;
     output r27 as Order.record;
-    output r32 as darkpool.aleo/match_orders.future;
+    output r32 as obscuradarkpool.aleo/match_orders.future;
 
 finalize match_orders:
     input r0 as field.public;
@@ -327,7 +327,7 @@ function settle_trade:
     output r20 as Token.record;
     output r22 as Token.record;
     output r24 as Token.record;
-    output r25 as darkpool.aleo/settle_trade.future;
+    output r25 as obscuradarkpool.aleo/settle_trade.future;
 
 finalize settle_trade:
     input r0 as field.public;
